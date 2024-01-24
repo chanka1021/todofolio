@@ -1,0 +1,26 @@
+#sideBarContainer{
+    background-color: #F4F4F4;
+    height: 100vh;
+    width: 15vw;
+    border-radius: 10px;  
+    padding: 0 20px;
+}
+.sbHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+.sbHeader p{
+    font-size: 1rem;
+    color: #444444;
+}
+.Bars{
+    color: #444444;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+.Bars:hover{
+    color: black;
+}

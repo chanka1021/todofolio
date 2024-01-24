@@ -1,9 +1,10 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import Home from "./pages/Home/Home";
 
 function App() {
 
-  const [todos,SetTodos] = useState(null)
+  /* const [todos,SetTodos] = useState(null)
  useEffect(()=>{
   GetTodos();
  },[])
@@ -13,10 +14,10 @@ function App() {
     SetTodos(res.data)
     console.log(res.data)
   }
-
+ */
   return (
     <>
-     <h1>s</h1>
+     <Home/>
     </>
   )
 }
