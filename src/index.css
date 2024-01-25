@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
   font-family: 'Rubik', sans-serif;
   padding: 10px 1px;
