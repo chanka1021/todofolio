@@ -19,7 +19,11 @@ export default {
         '900': '#714012',
         '950': '#422106',
     },
-      'main':'#101820'
+    
+      'main':'#101820',
+      'MyGray' :'#4C4C4C',
+      'MySubGray' :'#444444',
+      'gray-i' : '#7C7C7C'
     },
   },
   plugins: [],

@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
-import "../styles/Sidebar.css";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import logo from "../assets/logo.png";
+import { FiSearch } from "react-icons/fi";
+
+// Create a context for the sidebar
 
 const SidebarContext = React.createContext();
 
@@ -11,7 +13,15 @@ export function Sidebar({ children }) {
   // State for controlling the expanded state of the sidebar
   const [expanded, setExpanded] = React.useState(true);
 
-  // Create a context for the sidebar
+  const searchInputRef = React.useRef(null);
+
+  function OnlyExpand(){
+    if(!expanded){
+      setExpanded(true)
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+  }}
 
   // Render the sidebar
   return (
@@ -34,6 +44,22 @@ export function Sidebar({ children }) {
             <FaBarsStaggered />
           </button>
         </div>
+        {/* search btn */}
+        <div className="max-w-md mx-auto mt-3">
+          <div className=" flex items-center w-full h-12 rounded-lg border border-[#EBEBEB] focus-within:shadow-sm overflow-hidden">
+            <div className="grid place-items-center h-full w-12 text-gray-300 cursor-pointer " onClick={OnlyExpand} >
+              <FiSearch className="text-MyGray" />
+            </div>
+            <input
+              ref={searchInputRef}
+              className={` ${expanded ? " py-2 w-full outline-none text-sm text-MyGray pr-2 font-semibold bg-portica-100 bg-opacity-0 "  : "w-0" }`}
+              type="text"
+              id="search"
+              placeholder="Search something.."
+            />
+          </div>
+        </div>
+
         {/* Provide the sidebar context */}
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="flex-1 px-3">{children}</ul>
@@ -74,14 +100,16 @@ export function SideBarItem({ icon, text, active }) {
   // Render the sidebar item
   return (
     <li
-      className={`relative flex items-center py-3 px-1 my-1 font font-medium rounded-md cursor-pointer transition-colors text-[#4C4C4C] group
+      className={`relative flex items-center py-3 px-3 my-1 font font-medium rounded-md cursor-pointer transition-colors text-MyGray group
    ${
      active
        ? "bg-portica-300  text-main   "
        : "hover:bg-portica-200 text-gray-500 text-gray-500"
    }`}
     >
-      {icon}
+      <span className="text-gray-i h-5 w-5">
+        {icon}
+      </span> 
       <span
         className={`overflow-hidden transition-all ${
           expanded ? "w-52 ml-3" : "w-0"
