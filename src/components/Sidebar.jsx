@@ -1,32 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import logo from "../assets/logo.png";
 import { FiSearch } from "react-icons/fi";
+import { SidebarContext } from "../pages/Home/Home";
+import UserSettingList from "./UserSettingList";
 
-// Create a context for the sidebar
-
-const SidebarContext = React.createContext();
 
 // Component for the sidebar
 export function Sidebar({ children }) {
   // State for controlling the expanded state of the sidebar
-  const [expanded, setExpanded] = React.useState(true);
-
   const searchInputRef = React.useRef(null);
-
-  function OnlyExpand(){
-    if(!expanded){
-      setExpanded(true)
+  const { expanded, setExpanded } = useContext(SidebarContext);
+  const [isOpen, setIsOpen] = useState(false);
+  function OnlyExpand_searchFocus() {
+    if (!expanded) {
+      setExpanded(true);
       if (searchInputRef.current) {
         searchInputRef.current.focus();
       }
-  }}
+    }
+  }
 
+  function OnlyExpand() {
+    if (!expanded) {
+      setExpanded(true);
+    }
+  }
   // Render the sidebar
   return (
-    <aside className="h-screen   w-[15vw]">
-      <nav className="h-full inline-flex flex-col bg-[#F4F4F4] shadow-lg ">
+    <aside className="h-screen">
+      <nav className="h-full inline-flex flex-col bg-[#F4F4F4] shadow-lg  ">
         <div className="p-4 pb-2 flex justify-between items-center">
           {/* Logo */}
           <img
@@ -47,85 +51,58 @@ export function Sidebar({ children }) {
         {/* search btn */}
         <div className="max-w-md mx-auto mt-3">
           <div className=" flex items-center w-full h-12 rounded-lg border border-[#EBEBEB] focus-within:shadow-sm overflow-hidden">
-            <div className="grid place-items-center h-full w-12 text-gray-300 cursor-pointer " onClick={OnlyExpand} >
+            <div
+              className="grid place-items-center h-full w-12 text-gray-300 cursor-pointer "
+              onClick={OnlyExpand_searchFocus}
+            >
               <FiSearch className="text-MyGray" />
             </div>
             <input
               ref={searchInputRef}
-              className={` ${expanded ? " py-2 w-full outline-none text-sm text-MyGray pr-2 font-semibold bg-portica-100 bg-opacity-0 "  : "w-0" }`}
+              className={` ${
+                expanded
+                  ? " py-2 w-full outline-none text-sm text-MyGray pr-2 font-semibold bg-portica-100 bg-opacity-0 "
+                  : "w-0"
+              }`}
               type="text"
               id="search"
-              placeholder="Search something.."
+              placeholder="Search a  Todo.."
             />
           </div>
         </div>
-
         {/* Provide the sidebar context */}
-        <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
-        </SidebarContext.Provider>
-        <div className="border-t flex p-3">
+        <ul className="flex-1 px-3">{children}</ul>
+        <div className="border-t border-gray-ii shadow-sm flex p-3 relative">
           {/* Profile image */}
           <img
             src="https://i.pravatar.cc/150?img=56"
             alt="profile"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full cursor-pointer"
+            onClick={OnlyExpand}
+            
           />
           <div
-            className={`flex justify-between items-center overflow-hidden transition-all ${
+            className={` flex justify-between items-center overflow-hidden transition-all ${
               expanded ? "w-52 ml-3" : "w-0"
             } `}
           >
             <div className="leading-4">
               {/* User name and email */}
               <h4 className="font-semibold">Achraf Ch</h4>
-              <span className="text-xs text-gray-500">achraf@gmail.comn</span>
+              <span className="text-xs text-gray-500">achraf@gmail.com</span>
             </div>
             {/* Settings button */}
-            <BsThreeDotsVertical
-              size={20}
-              className="opacity-50 hover:opacity-100 cursor-pointer transform hover:scale-125 duration-300"
-            />
+            <button onClick={() => setIsOpen(!isOpen)}>
+              <BsThreeDotsVertical
+                size={20}
+                className="opacity-50   hover:opacity-100 cursor-pointer transform hover:scale-125 duration-300"
+              />
+            </button>
+            {/* Settings dropdown */}
+            {isOpen && <UserSettingList isOpen={isOpen} setIsOpen={setIsOpen}/>}
           </div>
         </div>
       </nav>
     </aside>
-  );
-}
-
-// Component for an item in the sidebar
-export function SideBarItem({ icon, text, active }) {
-  // Get the expanded state from the sidebar context
-  const { expanded } = useContext(SidebarContext);
-  // Render the sidebar item
-  return (
-    <li
-      className={`relative flex items-center py-3 px-3 my-1 font font-medium rounded-md cursor-pointer transition-colors text-MyGray group
-   ${
-     active
-       ? "bg-portica-300  text-main   "
-       : "hover:bg-portica-200 text-gray-500 text-gray-500"
-   }`}
-    >
-      <span className="text-gray-i h-5 w-5">
-        {icon}
-      </span> 
-      <span
-        className={`overflow-hidden transition-all ${
-          expanded ? "w-52 ml-3" : "w-0"
-        }`}
-      >
-        {text}
-      </span>
-      {!expanded && (
-        <div
-          className={` absolute left-full rounded-md px-2 py-2 ml-6 bg-portica-900 text-main invisible opacity-25 -translate-x-3 transition-all
-        group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-      `}
-        >
-          {text}
-        </div>
-      )}
-    </li>
   );
 }
