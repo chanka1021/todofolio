@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IoMdSettings } from "react-icons/io";
 import { BiLogOut } from "react-icons/bi";
 import { useClickAway } from "@uidotdev/usehooks";
+import { ComponentsList, SidebarContext } from "../pages/Home/Home";
 
 
 function UserSettingList({ isOpen, setIsOpen }) {
@@ -9,6 +10,15 @@ function UserSettingList({ isOpen, setIsOpen }) {
   const ref = useClickAway(() => {
     setIsOpen(false);
   });
+
+
+  const {setSelectedComponent } = useContext(SidebarContext);
+
+  const handleItemClick = (item) =>{
+    const selectedItem = ComponentsList.find((component) => component.id === item);
+    setSelectedComponent(selectedItem.component );
+  }
+  
 
   // Render the user settings list
   return (
@@ -21,7 +31,9 @@ function UserSettingList({ isOpen, setIsOpen }) {
     >
       <button>
         {/* Setting item */}
-        <li className="flex items-center cursor-pointer px-4 py-2 hover:text-main">
+        <li 
+        onClick={()=>{handleItemClick(2)}}
+        className="flex items-center cursor-pointer px-4 py-2 hover:text-main">
           <IoMdSettings className=" text-lg mr-2" />
           Setting
         </li>
